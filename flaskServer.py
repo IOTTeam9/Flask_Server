@@ -52,9 +52,9 @@ def estimate_location():
     
     if closest_data is not None:
         location = closest_data['place']
-        return jsonify({'location': location})
+        return jsonify({location})
     else:
-        return jsonify({'message': 'Location not found'})
+        return jsonify({'NaN'})
 
 if __name__ == '__main__':
     app.run()
