@@ -61,21 +61,28 @@ def estimate_location():
         for bssid in df_POST['bssid']:
             df_matched = df_wifi[df_wifi['bssid'] == bssid]
             rssi = df_POST[df_POST['bssid'] == bssid]['rssi'].values[0]
-            distances = euclidean_distances([[rssi]], df_matched[['rssi']])
-            closest_index = distances.argmin()
-            closest_data = df_matched.iloc[closest_index]
-            place = closest_data['place']
-            place_records.append(place)
+            if not df_matched.empty:
+                distances = euclidean_distances([[rssi]], df_matched[['rssi']])
+                closest_index = distances.argmin()
+                closest_data = df_matched.iloc[closest_index]
+                place = closest_data['place']
+                place_records.append(place)
+            else:
+                continue
         
-        counter = Counter(place_records)
-        most_common = counter.most_common(1)
-        location = most_common[0][0]
-        
-        if closest_data is not None:
-            print("Successfully get location")
-            return jsonify({"location" : location})
-        else:
+        if df_matched.empty:
             return jsonify({"location" :'NaN'})
+        
+        else:
+            counter = Counter(place_records)
+            most_common = counter.most_common(1)
+            location = most_common[0][0]
+            
+            if closest_data is not None:
+                print("Successfully get location")
+                return jsonify({"location" : location})
+            else:
+                return jsonify({"location" :'NaN'})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5000', debug=True)
