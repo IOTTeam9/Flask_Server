@@ -1,21 +1,12 @@
 import pandas as pd
 import numpy as np
 from flask import Flask, jsonify, request
-from flask_mysqldb import MySQL
 from apscheduler.schedulers.background import BackgroundScheduler
 from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = '3.34.148.235'
-app.config['MYSQL_PORT'] = 3306
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Iot1234!'
-app.config['MYSQL_DB'] = 'Iot'
-app.config['MYSQL_DATABASE_CONNECT'] = True
-
-mysql = MySQL(app)
 scheduler = BackgroundScheduler()
 label_encoder = LabelEncoder()
 std_scaler = StandardScaler()
