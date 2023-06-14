@@ -35,7 +35,7 @@ def estimate_location():
                                 'rssi' : rssi_list})
     
     else:
-        df_wifi = df[df['rssi', 'bssid', 'place'].isin(df_POST['bssid'])]
+        df_wifi = df[df['bssid'].isin(df_POST['bssid'])]
     
         print("mySQL Data read successfully")
         print(df_wifi)
