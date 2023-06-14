@@ -82,17 +82,22 @@ def estimate_location():
         for bssid in df_POST['bssid']:
             # df_matched list is for same bssid (android input bssid & DB data bssid)
             df_matched = df_wifi[df_wifi['bssid'] == bssid]
-            # Get rssi value from android input in df_matched case
-            rssi = df_POST[df_POST['bssid'] == bssid]['rssi'].values[0]
-            # Exception of no match in android and DB bssid
-            if not df_matched.empty:
-                # Calculate distance between android input rssi and DB input rssi
-                distances = euclidean_distances([[rssi]], df_matched[['rssi']])
-                closest_index = distances.argmin()
-                closest_data = df_matched.iloc[closest_index]
-                place = closest_data['place']
-                # Sum placees in same bssid and similer rssi (android input & DB data)
-                place_records.append(place)
+            # Exception of rssi input invalid case
+            if df_POST[df_POST['bssid'] == bssid]['rssi'].values[0] is not None:
+                # Get rssi value from android input in df_matched case
+                rssi = df_POST[df_POST['bssid'] == bssid]['rssi'].values[0]
+                # Exception of no match in android and DB bssid
+                if not df_matched.empty:
+                    # Calculate distance between android input rssi and DB input rssi
+                    distances = euclidean_distances([[rssi]], df_matched[['rssi']])
+                    closest_index = distances.argmin()
+                    closest_data = df_matched.iloc[closest_index]
+                    place = closest_data['place']
+                    # Sum placees in same bssid and similer rssi (android input & DB data)
+                    place_records.append(place)
+                else:
+                    # Just pass no match case from now
+                    continue
             else:
                 # Just pass no match case from now
                 continue
