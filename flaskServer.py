@@ -106,7 +106,7 @@ def estimate_location():
             # Count locations in place_records
             counter = Counter(place_records)
             most_common = counter.most_common(1)
-            # Get Mod value of location => final prediction
+            # Get Mode value of location => final prediction
             location = most_common[0][0]
             
             # If get valid location
@@ -114,7 +114,7 @@ def estimate_location():
                 print("Successfully get location")
                 print("Location : ", location)
                 return jsonify({"location" : location})
-            # Else
+            # Else closest dataset is empty
             else:
                 return jsonify({"location" :'NaN'})
 
