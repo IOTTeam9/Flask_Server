@@ -33,6 +33,7 @@ def estimate_location():
         df_POST = pd.DataFrame({
                                 'bssid' : bssid_list,
                                 'rssi' : rssi_list})
+        return 'Data Frame has done'
     
     else:
         df_wifi = df[df['bssid'].isin(df_POST['bssid'])]
