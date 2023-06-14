@@ -20,6 +20,10 @@ scheduler = BackgroundScheduler()
 label_encoder = LabelEncoder()
 std_scaler = StandardScaler()
 
+@app.route('/')
+def home():
+    return 'HI'
+
 @app.route('/flask', methods = ['GET', 'POST'])
 def estimate_location():
 
