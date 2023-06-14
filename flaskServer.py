@@ -20,7 +20,7 @@ scheduler = BackgroundScheduler()
 label_encoder = LabelEncoder()
 std_scaler = StandardScaler()
 
-@app.route('/')
+@app.route('/', method = ['GET', 'POST'])
 def estimate_location():
     
     # data = request.get_json()
