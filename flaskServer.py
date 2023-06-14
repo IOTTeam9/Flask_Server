@@ -83,6 +83,9 @@ def estimate_location():
 
         # closest_index = np.argmin(distances)
         # closest_data = df_wifi.iloc[closest_index]
+        
+        print("LOCATION")
+        print(location)
 
         if closest_data is not None:
             print("Successfully get location")
