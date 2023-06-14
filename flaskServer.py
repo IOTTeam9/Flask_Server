@@ -20,16 +20,27 @@ scheduler = BackgroundScheduler()
 label_encoder = LabelEncoder()
 std_scaler = StandardScaler()
 
-@app.route('/', method = ['GET', 'POST'])
+@app.route('/', methods = ['GET', 'POST'])
 def estimate_location():
     
-    # data = request.get_json()
-    # df_query = pd.DataFrame(data)
-    df_dic = {
-        'bssid' : ['94:64:24:a1:07:90', '94:64:24:9e:c0:a2', '32:cd:a7:bf:19:1a'],
-        'rssi' : [-58, -50, -62]
-    }
-    df_query = pd.DataFrame(df_dic)
+    bssid_list = []
+    rssi_list = []
+    
+    data = request.get_json()
+    
+    for i in data:
+        bssid_list.append(i["bssid"])
+        rssi_list.append(i["rssi"])
+        
+    
+    df_query = pd.DataFrame({
+                             'bssid' : bssid_list,
+                             'rssi' : rssi_list})
+    # df_dic = {
+    #     'bssid' : ['94:64:24:a1:07:90', '94:64:24:9e:c0:a2', '32:cd:a7:bf:19:1a'],
+    #     'rssi' : [-58, -50, -62]
+    # }
+    # df_query = pd.DataFrame(df_dic)
     
     conn = mysql.connection
     cursor = conn.cursor()
