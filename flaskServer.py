@@ -26,6 +26,9 @@ def estimate_location():
         data = request.get_json()
         print("Data get successfully ! ")
         
+        bssid_list = []
+        rssi_list = []
+        
         for i in data:
             bssid_list.append(i["bssid"])
             rssi_list.append(i["rssi"])
