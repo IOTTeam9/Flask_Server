@@ -26,46 +26,46 @@ def home():
 
 @app.route('/flask', methods = ['GET', 'POST'])
 def estimate_location():
+    
+    print("Open of /flask")
 
     bssid_list = []
     rssi_list = []
+    
     data = request.get_json()
-
+    print("Data get successfully ! ")
+    
     for i in data:
         bssid_list.append(i["bssid"])
         rssi_list.append(i["rssi"])
-
-
-    df_query = pd.DataFrame({
+    df_POST = pd.DataFrame({
                              'bssid' : bssid_list,
                              'rssi' : rssi_list})
-    # df_dic = {
-    #     'bssid' : ['94:64:24:a1:07:90', '94:64:24:9e:c0:a2', '32:cd:a7:bf:19:1a'],
-    #     'rssi' : [-58, -50, -62]
-    # }
-    # df_query = pd.DataFrame(df_dic)
+    
+    print("DataFramming successfully")
+    print(df_POST)
 
     conn = mysql.connection
     cursor = conn.cursor()
-    query = "SELECT rssi, bssid, place FROM wifi WHERE bssid IN ('{}')".format("', '".join(df_query['bssid']))
+    query = "SELECT rssi, bssid, place FROM wifi WHERE bssid IN ('{}')".format("', '".join(df_POST['bssid']))
     cursor.execute(query)
     result = cursor.fetchall()
-
     df_wifi = pd.DataFrame(result, columns=['rssi', 'bssid', 'place'])
+    
+    print("mySQL Data read successfully")
+    print(df_wifi)
 
-    print(df_query)
-    # print(df_wifi)
-
-    df_query['bssid'] = [int(x.replace(":", "")[-12:], 16) for x in df_query['bssid']]
+    df_POST['bssid'] = [int(x.replace(":", "")[-12:], 16) for x in df_POST['bssid']]
     df_wifi['bssid'] = [int(x.replace(":", "")[-12:], 16) for x in df_wifi['bssid']]
 
-    distances = euclidean_distances(df_query[['rssi', 'bssid']], df_wifi[['rssi', 'bssid']])
+    distances = euclidean_distances(df_POST[['rssi', 'bssid']], df_wifi[['rssi', 'bssid']])
 
     closest_index = np.argmin(distances)
     closest_data = df_wifi.iloc[closest_index]
 
     if closest_data is not None:
         location = closest_data['place']
+        print("Successfully get location")
         return jsonify({location})
     else:
         return jsonify({'NaN'})
