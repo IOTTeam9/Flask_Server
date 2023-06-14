@@ -22,7 +22,6 @@ def home():
 
 @app.route('/flask', methods = ['GET', 'POST'])
 def estimate_location():
-    
     if request.method == 'POST':        
         data = request.get_json()
         print("Data get successfully ! ")
@@ -31,8 +30,8 @@ def estimate_location():
             bssid_list.append(i["bssid"])
             rssi_list.append(i["rssi"])
         df_POST = pd.DataFrame({
-                                'bssid' : bssid_list,
-                                'rssi' : rssi_list})
+                                'bssid' : list(bssid_list),
+                                'rssi' : list(rssi_list)})
         return 'Data Frame has done'
     
     else:
