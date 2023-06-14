@@ -29,7 +29,6 @@ def estimate_location():
 
     bssid_list = []
     rssi_list = []
-
     data = request.get_json()
 
     for i in data:
@@ -54,7 +53,7 @@ def estimate_location():
 
     df_wifi = pd.DataFrame(result, columns=['rssi', 'bssid', 'place'])
 
-    # print(df_query)
+    print(df_query)
     # print(df_wifi)
 
     df_query['bssid'] = [int(x.replace(":", "")[-12:], 16) for x in df_query['bssid']]
